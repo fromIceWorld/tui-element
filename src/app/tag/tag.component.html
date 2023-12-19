@@ -1,0 +1,8 @@
+<t-tag
+  *ngFor="let tag of tags"
+  [tagMode]="tagMode"
+  [tagColor]="tag.tagColor"
+  (tagOnClose)="tagOnClose($event)"
+  (tagCheckedChange)="tagCheckedChange($event)"
+  >{{ tag.lable }}</t-tag
+>

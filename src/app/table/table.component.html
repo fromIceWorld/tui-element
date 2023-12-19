@@ -1,0 +1,34 @@
+<t-table
+  [data]="tableData"
+  [autoLayout]="true"
+  [resizableColumns]="true"
+  [(selection)]="selectedItems"
+  [noData]="noDataType"
+>
+  <ng-template tTemplate="header">
+    <tr>
+      <ng-container [ngSwitch]="leftType">
+        <th style="width: 20px" *ngSwitchCase="'checkbox'">
+          <t-tableHeaderCheckbox></t-tableHeaderCheckbox>
+        </th>
+      </ng-container>
+      <th
+        tResizableColumn
+        *ngFor="let head of headers"
+        [ngStyle]="{ width: head.width || 'auto' }"
+      >
+        {{ head.label }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template tTemplate="body" let-tableData let-rowIndex="rowIndex">
+    <tr [tSelectableRow]="tableData">
+      <ng-container [ngSwitch]="leftType">
+        <td *ngSwitchCase="'checkbox'">
+          <t-tableCheckbox [value]="tableData"></t-tableCheckbox>
+        </td>
+      </ng-container>
+      <td *ngFor="let head of headers">{{ tableData[head.key] }}</td>
+    </tr>
+  </ng-template>
+</t-table>

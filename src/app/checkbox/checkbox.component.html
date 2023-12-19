@@ -1,0 +1,10 @@
+<div>
+  <t-checkbox
+    name="group1"
+    *ngFor="let item of options"
+    [label]="item.label"
+    [value]="item.value"
+    [disabled]="!!item.disabled"
+    [(ngModel)]="value"
+  ></t-checkbox>
+</div>

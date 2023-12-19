@@ -1,0 +1,11 @@
+<div class="ui-inputgroup">
+  <input
+    type="text"
+    [ngStyle]="{ width: width }"
+    [placeholder]="placeholder"
+    [empty]="empty"
+    tInputText
+    [(ngModel)]="value"
+  />
+  <i class="icon-smallcolse" *ngIf="value" (click)="value = ''"></i>
+</div>

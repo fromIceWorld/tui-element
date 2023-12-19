@@ -1,0 +1,38 @@
+{
+  "base": {
+    "name": "关基大屏",
+    "nametooltip": "TopsecUI",
+    "productLogo": "./favicon.ico",
+    "vendor": "天融信科技集团",
+    "vendorLogo": "./assets/imgs/header/logo.png",
+    "copyright": "",
+    "version": "",
+    "watermark": "天融信科技集团"
+  },
+  "main": {
+    "navigator": {
+      "disPageHeader": true,
+      "disSubNav": true,
+      "disTab": true,
+      "disPageFooter": true
+    },
+    "skinSett": {
+      "disSkin": true,
+      "disCustomTheme": true,
+      "skin": "defaultTheme",
+      "skins": [{ "id": "defaultTheme" }, { "id": "blueTheme" }]
+    },
+    "appInfo": [
+      {
+        "app": "ddos",
+        "label": "ddos",
+        "viewSett": {
+          "id": "ddos",
+          "name": "ddos"
+        },
+        "children" : []
+      }
+    ]
+  },
+  "serviceUrl": {}
+}
