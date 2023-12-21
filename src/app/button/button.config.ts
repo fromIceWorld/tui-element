@@ -6,7 +6,7 @@ const BUTTON_CONFIG = {
       config: {
         name: {
           type: 'string',
-          value: '',
+          value: '确定',
         },
         width: {
           type: 'string',

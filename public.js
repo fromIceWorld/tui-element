@@ -187,7 +187,7 @@ const components = [
   {
     id: "tui-topn",
     type: "node",
-    icon: "#icon-a-titleoptimization",
+    icon: "#icon-top",
     title: `topN:
                  Angular@12 + @tui/pangu2.1.2`,
     color: "#dd0031",

@@ -18,6 +18,7 @@ export class TuiButtonComponent implements OnInit {
   rounded = true;
   icon = '';
   status = '';
+  name = '确定';
   constructor() {}
 
   ngOnInit(): void {}
