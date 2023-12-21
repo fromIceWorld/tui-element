@@ -230,7 +230,7 @@ a:focus {
 .cdk-high-contrast-active .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
     opacity: 0.6;
 }
-.cdk-overlay-dark-backdrop {
+.cdk-overlay-dark-backdrop  {
     background: #00000052;
 }
 .cdk-overlay-transparent-backdrop,
