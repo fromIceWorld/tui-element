@@ -32,9 +32,9 @@ const TUI_PAGINATOR_CONFIG = {
     },
   ],
   component: {
-    event: [],
+    event: [{ label: 'pageChange', value: 'pageChange' }],
     methods: [],
-    data: [],
+    data: ['total', 'pageIndex', 'rows'],
     params: [],
   },
 };

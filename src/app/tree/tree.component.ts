@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { config } from 'src/decorators/config';
 import { TUI_TREE_CONFIG } from './tree.config';
 
@@ -10,6 +10,7 @@ import { TUI_TREE_CONFIG } from './tree.config';
 })
 export class TuiTreeComponent implements OnInit {
   static tagNamePrefix: string = 'my-tui-tree';
+  @Output() selectionChange = new EventEmitter();
   data = [
     {
       label: '网络攻击',
@@ -32,6 +33,9 @@ export class TuiTreeComponent implements OnInit {
     },
   ];
   selectedList = [];
+  onSelectionChange(e: any) {
+    this.selectionChange.emit();
+  }
   constructor() {}
 
   ngOnInit(): void {}
@@ -49,24 +53,41 @@ export class TuiTreeComponent implements OnInit {
                   super();
                   this.data = ${data.value};
                 }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
            }
            MyTuiTree${index}.ɵcmp = {
             ...MyTuiTree${index}.ɵcmp,
             factory:() => { return new MyTuiTree${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyTuiTree${index}, {  injector: injector});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = createCustomElement(MyTuiTree${index}, {  injector: injector});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get tree(){
+                  return this.instance.data;
+                }
+                set tree(val){
+                  this.instance.data = val || [];
+                  this.check();
+                }
+                get selectedList(){
+                  return this.instance.selectedList;
+                }
+                set selectedList(val){
+                  this.instance.selectedList = val || [];
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

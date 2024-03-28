@@ -10,8 +10,17 @@ const TUI_TABLE_CONFIG = {
             { label: '设备名称', key: 'name', width: '100px' },
             { label: '所属安全域', key: 'belong' },
             { label: 'IP地址', key: 'IP', width: '300px' },
-            { label: '风险等级', key: 'riskLevel', width: '50%' },
+            {
+              label: '风险等级',
+              key: 'riskLevel',
+              width: '20%',
+            },
           ],
+        },
+        slots: {
+          type: 'slots',
+          note: '当前slots与headers一一对应',
+          value: [[], [], [], []],
         },
         tableData: {
           type: 'json',
@@ -32,8 +41,7 @@ const TUI_TABLE_CONFIG = {
   component: {
     event: [],
     methods: [],
-    data: [],
-    params: [],
+    data: ['tableData', 'rowData', 'selectedItems'],
   },
 };
 export { TUI_TABLE_CONFIG };

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { config } from 'src/decorators/config';
 import { TUI_PAGINATOR_CONFIG } from './paginator.config';
 
@@ -9,7 +9,9 @@ import { TUI_PAGINATOR_CONFIG } from './paginator.config';
   styleUrls: ['./paginator.component.less'],
 })
 export class TuiPaginatorComponent implements OnInit {
+  @Output() pageChange = new EventEmitter();
   static tagNamePrefix: string = 'my-tui-paginator';
+  pageIndex = 0;
   rows = 10;
   totalRecords = 0;
   displayRecords = true;
@@ -19,7 +21,8 @@ export class TuiPaginatorComponent implements OnInit {
 
   constructor() {}
   onPageChange(e: any) {
-    console.log(e);
+    this.pageIndex = e.page;
+    this.pageChange.emit();
   }
   ngOnInit(): void {}
   static extends(option: any): { html: string; js: string } {
@@ -49,24 +52,48 @@ export class TuiPaginatorComponent implements OnInit {
                   this.displayPole = ${displayPole.value};
 
                 }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
            }
            MyTuiPaginator${index}.ɵcmp = {
             ...MyTuiPaginator${index}.ɵcmp,
             factory:() => { return new MyTuiPaginator${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyTuiPaginator${index}, {  injector: injector});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = createCustomElement(MyTuiPaginator${index}, {  injector: injector});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get total(){
+                  return this.instance.totalRecords;
+                }
+                set total(val){
+                  this.instance.totalRecords = val || 0 ;
+                  this.check();
+                }
+                get pageIndex(){
+                  return this.instance.pageIndex;
+                }
+                set pageIndex(val){
+                  this.instance.pageIndex = val || 0 ;
+                  this.check();
+                }
+                get rows(){
+                  return this.instance.rows;
+                }
+                set rows(val){
+                  this.instance.rows = val || 10 ;
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

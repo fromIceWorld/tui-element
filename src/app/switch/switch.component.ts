@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { config } from 'src/decorators/config';
 import { TUI_SWITCH_CONFIG } from './switch.config';
 
@@ -10,6 +10,23 @@ import { TUI_SWITCH_CONFIG } from './switch.config';
 })
 export class TuiSwitchComponent implements OnInit {
   static tagNamePrefix: string = 'my-tui-switch';
+  @Output('change') change = new EventEmitter();
+  @Input('input')
+  set inputConfig(configJSON: string) {
+    try {
+      const config = JSON.parse(configJSON);
+      this.checked =
+        config?.checked !== undefined ? config.checked : this.checked;
+      this.checkedYes = config?.checkedYes || this.checkedYes;
+      this.checkedNo = config?.checkedNo || this.checkedNo;
+    } catch {
+      // 当只传入一个值时，不使用
+      // this.icon = configJSON;
+    }
+  }
+  onChange() {
+    this.change.emit();
+  }
   checked = false;
   checkedYes = '';
   checkedNo = '';
@@ -31,24 +48,34 @@ export class TuiSwitchComponent implements OnInit {
                   this.checkedYes = '${checkedYes.value}';
                   this.checkedNo = '${checkedNo.value}';
                 }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
            }
            MyTuiSwitch${index}.ɵcmp = {
             ...MyTuiSwitch${index}.ɵcmp,
             factory:() => { return new MyTuiSwitch${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyTuiSwitch${index}, {  injector: injector});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = createCustomElement(MyTuiSwitch${index}, {  injector: injector});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get checked(){
+                  return this.instance.checked;
+                }
+                set checked(val){
+                  this.instance.checked = !!val;
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

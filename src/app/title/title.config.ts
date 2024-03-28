@@ -44,7 +44,7 @@ const TUI_TITLE_CONFIG = {
   component: {
     event: [],
     methods: [],
-    data: [],
+    data: ['text'],
     params: [],
   },
 };

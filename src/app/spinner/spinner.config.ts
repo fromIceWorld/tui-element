@@ -30,7 +30,7 @@ const TUI_SPINNER_CONFIG = {
   component: {
     event: [],
     methods: [],
-    data: [],
+    data: ['value'],
     params: [],
   },
 };

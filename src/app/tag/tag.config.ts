@@ -22,10 +22,10 @@ const TUI_TAG_CONFIG = {
     },
   ],
   component: {
+    input: ['tags'],
     event: [],
     methods: [],
-    data: [],
-    params: [],
+    data: ['tags'],
   },
 };
 export { TUI_TAG_CONFIG };

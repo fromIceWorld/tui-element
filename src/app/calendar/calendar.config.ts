@@ -19,7 +19,7 @@ const TUI_CALENDAR_CONFIG = {
   component: {
     event: [],
     methods: [],
-    data: [],
+    data: ['value'],
     params: [],
   },
 };

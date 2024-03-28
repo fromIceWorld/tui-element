@@ -26,7 +26,7 @@ const TUI_TEXTAREA_CONFIG = {
   component: {
     event: [],
     methods: [],
-    data: [],
+    data: ['value'],
     params: [],
   },
 };

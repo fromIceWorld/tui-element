@@ -18,7 +18,7 @@ export class TuiButtonComponent implements OnInit {
   rounded = true;
   icon = '';
   status = '';
-  name = '确定';
+  label = '确定';
   constructor() {}
 
   ngOnInit(): void {}
@@ -28,7 +28,7 @@ export class TuiButtonComponent implements OnInit {
       tagName = `${TuiButtonComponent.tagNamePrefix}-${index}`;
     const { html, className } = option;
     const {
-      name,
+      label,
       width,
       type,
       iconPos,
@@ -45,7 +45,7 @@ export class TuiButtonComponent implements OnInit {
                constructor(){
                   super();
                   this.disabled = ${disabled.value};
-                  this.name = '${name.value}';
+                  this.label = '${label.value}';
                   this.width = '${width.value}';
                   this.type = '${type.value}';
                   this.iconPos = '${iconPos.value}';
@@ -54,37 +54,48 @@ export class TuiButtonComponent implements OnInit {
                   this.icon = '${icon.value}';
                   this.status = '${status.value}';
                 }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
-                setLoading(){
-                  this.loading = true;
-                  this.check();
-                }
-                setNormal(){
-                  this.loading = false;
-                  this.disabled = false;
-                  this.check();
-                }
-                setDisabled(){
-                  this.disabled = true;
-                  this.check();
-                }
            }
            MyTuiButton${index}.ɵcmp = {
             ...MyTuiButton${index}.ɵcmp,
             factory:() => { return new MyTuiButton${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyTuiButton${index}, {  injector: injector});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = createCustomElement(MyTuiButton${index}, {  injector: injector});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                setLoading(){
+                  this.instance.loading = true;
+                  this.check();
+                }
+                setNormal(){
+                  this.instance.loading = false;
+                  this.instance.disabled = false;
+                  this.check();
+                }
+                setDisabled(){
+                  this.instance.disabled = true;
+                  this.check();
+                }
+                set label(value){
+                  this.instance.label = value;
+                  this.check();
+                }
+                get label(){
+                  return this.instance.label;
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

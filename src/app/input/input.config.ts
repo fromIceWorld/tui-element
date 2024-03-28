@@ -26,7 +26,7 @@ const TUI_INPUT_CONFIG = {
   component: {
     event: [],
     methods: [],
-    data: [],
+    data: ['value'],
     params: [],
   },
 };

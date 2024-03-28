@@ -31,24 +31,34 @@ export class TuiCalendarComponent implements OnInit {
                   this.width = '${width.value}';
 
                 }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
            }
            MyTuiCalendar${index}.ɵcmp = {
             ...MyTuiCalendar${index}.ɵcmp,
             factory:() => { return new MyTuiCalendar${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyTuiCalendar${index}, {  injector: injector});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = createCustomElement(MyTuiCalendar${index}, {  injector: injector});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get value(){
+                  return this.instance.value;
+                }
+                set value(val){
+                  this.instance.value = val;
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

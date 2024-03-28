@@ -15,7 +15,7 @@ const TUI_RADIO_CONFIG = {
   component: {
     event: [],
     methods: [],
-    data: [],
+    data: ['value'],
     params: [],
   },
 };

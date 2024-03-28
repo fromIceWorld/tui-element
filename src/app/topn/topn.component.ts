@@ -39,24 +39,34 @@ export class TuiTopnComponent implements OnInit, AfterViewChecked {
                   super();
                   this.dataConfig.data = ${data.value};
                 }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
            }
            MyTuiTopn${index}.ɵcmp = {
             ...MyTuiTopn${index}.ɵcmp,
             factory:() => { return new MyTuiTopn${index}()},
            },
            (()=>{
-              let customEl = createCustomElement(MyTuiTopn${index}, {  injector: injector});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = createCustomElement(MyTuiTopn${index}, {  injector: injector});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get list(){
+                  return this.instance.dataConfig.list;
+                }
+                set list(val){
+                  this.instance.dataConfig.list = val || [];
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

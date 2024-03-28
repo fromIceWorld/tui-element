@@ -13,9 +13,9 @@ const TUI_TREE_CONFIG = {
     },
   ],
   component: {
-    event: [],
+    event: [{ label: 'selectionChange', value: 'selectionChange' }],
     methods: [],
-    data: [],
+    data: ['tree', 'selectedList'],
     params: [],
   },
 };

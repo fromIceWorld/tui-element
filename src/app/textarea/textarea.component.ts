@@ -33,24 +33,34 @@ export class TuiTextareaComponent implements OnInit {
                   this.rows = ${rows.value};
                   this.maxlength = ${maxlength.value};
                 }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
            }
            MyTuiTextarea${index}.ɵcmp = {
             ...MyTuiTextarea${index}.ɵcmp,
             factory:() => { return new MyTuiTextarea${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyTuiTextarea${index}, {  injector: injector});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = createCustomElement(MyTuiTextarea${index}, {  injector: injector});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get value(){
+                  return this.instance.value;
+                }
+                set value(val){
+                  this.instance.value = val || '';
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

@@ -7,6 +7,7 @@
     [filter]="filter"
     [filterClear]="true"
     [showClear]="true"
+    (onChange)="onSelectChange($event)"
     [style]="{ width }"
   >
   </t-dropdown>

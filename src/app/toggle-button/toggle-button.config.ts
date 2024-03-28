@@ -30,10 +30,13 @@ const TOGGLE_BUTTON_CONFIG = {
     },
   ],
   component: {
-    event: [],
+    input: ['optional'],
+    event: [
+      { label: 'click', value: 'click' },
+      { label: 'change', value: 'change' },
+    ],
     methods: [],
-    data: [],
-    params: [],
+    data: ['selected', 'optional'],
   },
 };
 export { TOGGLE_BUTTON_CONFIG };

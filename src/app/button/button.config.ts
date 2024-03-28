@@ -4,7 +4,7 @@ const BUTTON_CONFIG = {
     {
       name: '基础',
       config: {
-        name: {
+        label: {
           type: 'string',
           value: '确定',
         },
@@ -42,7 +42,8 @@ const BUTTON_CONFIG = {
           value: false,
         },
         icon: {
-          type: 'string',
+          type: 'icon-class',
+          options: require('../../assets/json/icon.json'),
           value: '',
         },
         status: {
@@ -60,10 +61,13 @@ const BUTTON_CONFIG = {
     },
   ],
   component: {
-    event: [],
-    methods: [],
-    data: [],
-    params: [],
+    event: [{ label: 'click', value: 'click' }],
+    methods: [
+      { label: 'setLoading', value: 'setLoading' },
+      { label: 'setNormal', value: 'setNormal' },
+      { label: 'setDisabled', value: 'setDisabled' },
+    ],
+    data: ['label'],
   },
 };
 export { BUTTON_CONFIG };

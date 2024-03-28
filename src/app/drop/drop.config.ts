@@ -21,9 +21,9 @@ const TUI_DROP_CONFIG = {
     },
   ],
   component: {
-    event: [],
+    event: [{ label: 'selectChange', value: 'selectChange' }],
     methods: [],
-    data: [],
+    data: ['value', 'options'],
     params: [],
   },
 };

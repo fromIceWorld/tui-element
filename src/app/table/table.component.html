@@ -22,13 +22,24 @@
     </tr>
   </ng-template>
   <ng-template tTemplate="body" let-tableData let-rowIndex="rowIndex">
-    <tr [tSelectableRow]="tableData">
+    <tr [tSelectableRow]="tableData" (click)="focusRow(tableData)">
       <ng-container [ngSwitch]="leftType">
         <td *ngSwitchCase="'checkbox'">
           <t-tableCheckbox [value]="tableData"></t-tableCheckbox>
         </td>
       </ng-container>
-      <td *ngFor="let head of headers">{{ tableData[head.key] }}</td>
+      <td *ngFor="let head of headers; index as i">
+        <div
+          style="display: flex"
+          *ngIf="slots[i] && slots[i].length"
+          appDynamicComponent
+          [tagNames]="slots[i]"
+          [input]="tableData[head.key]"
+        ></div>
+        <span *ngIf="!slots[i] || !slots[i].length">
+          {{ tableData[head.key] }}
+        </span>
+      </td>
     </tr>
   </ng-template>
 </t-table>

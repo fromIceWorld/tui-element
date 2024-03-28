@@ -1,0 +1,22 @@
+<span
+  (click)="clickIcon()"
+  [ngStyle]="{
+    direction: direction,
+    display: 'flex',
+    'align-items': 'center'
+  }"
+>
+  <span
+    [ngStyle]="{
+      'font-size': textFontSize,
+      margin: margin,
+      color: textColor
+    }"
+    >{{ label }}</span
+  >
+
+  <span
+    [ngClass]="icon"
+    [ngStyle]="{ color: iconColor, 'font-size': iconFontSize }"
+  ></span>
+</span>

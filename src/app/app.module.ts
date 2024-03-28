@@ -27,6 +27,8 @@ import { TuiButtonComponent } from './button/button.component';
 import { TuiCalendarComponent } from './calendar/calendar.component';
 import { TuiCheckboxComponent } from './checkbox/checkbox.component';
 import { TuiDropComponent } from './drop/drop.component';
+import { DynamicComponentDirective } from './dynamic-component/dynamic-component.directive';
+import { TuiIconComponent } from './icon/icon.component';
 import { TuiInputComponent } from './input/input.component';
 import { TuiPaginatorComponent } from './paginator/paginator.component';
 import { TuiRadioComponent } from './radio/radio.component';
@@ -59,6 +61,8 @@ import { TuiTreeComponent } from './tree/tree.component';
     TuiTagComponent,
     TuiTitleComponent,
     TuiTopnComponent,
+    TuiIconComponent,
+    DynamicComponentDirective,
   ],
   imports: [
     BrowserModule,
@@ -90,12 +94,23 @@ import { TuiTreeComponent } from './tree/tree.component';
 export class AppModule {
   constructor(private injector: Injector) {
     // @ts-ignore
-    window['injector'] = this.injector;
+    window.injector = Injector.create({
+      name: '模块自定义依赖',
+      parent: injector,
+      providers: [],
+    });
   }
   registerEl(tagName: string, fn: CustomElementConstructor) {
     if (customElements.get(tagName)) {
       console.warn('企图注册相同名称的标签:', tagName);
     } else {
+      // @ts-ignore
+      if (!window['components']) {
+        // @ts-ignore
+        window['components'] = new Set();
+      }
+      // @ts-ignore
+      window['components'].add(tagName);
       //定义组件
       customElements.define(tagName, fn);
     }
@@ -104,43 +119,151 @@ export class AppModule {
     // @ts-ignore
     window['createCustomElement'] = createCustomElement;
     // 按钮
-    const appRoot = createCustomElement(TuiButtonComponent, {
+    const appRoot = createCustomElement(AppComponent, {
       injector: this.injector,
     });
     // 将 AppComponent挂载到html中以初始化当前应用
     this.registerEl('my-tui-elements', appRoot);
     // @ts-ignore
     window['TuiButtonComponent'] = TuiButtonComponent;
+    this.registerEl(
+      'app-button',
+      createCustomElement(TuiButtonComponent, {
+        injector: this.injector,
+      })
+    );
+
     // @ts-ignore
     window['TuiToggleButtonComponent'] = TuiToggleButtonComponent;
     // @ts-ignore
+    // 初始化组件仓库
+    window['components'] = new Set();
+    this.registerEl(
+      'app-toggle-button',
+      createCustomElement(TuiToggleButtonComponent, {
+        injector: this.injector,
+      })
+    );
+    // @ts-ignore
     window['TuiInputComponent'] = TuiInputComponent;
+    this.registerEl(
+      'app-input',
+      createCustomElement(TuiInputComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiTextareaComponent'] = TuiTextareaComponent;
+    this.registerEl(
+      'app-textarea',
+      createCustomElement(TuiTextareaComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiSpinnerComponent'] = TuiSpinnerComponent;
+    this.registerEl(
+      'app-spinner',
+      createCustomElement(TuiSpinnerComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiCheckboxComponent'] = TuiCheckboxComponent;
+    this.registerEl(
+      'app-checkbox',
+      createCustomElement(TuiCheckboxComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiRadioComponent'] = TuiRadioComponent;
+    this.registerEl(
+      'app-radio',
+      createCustomElement(TuiRadioComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiDropComponent'] = TuiDropComponent;
+    this.registerEl(
+      'app-drop',
+      createCustomElement(TuiDropComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiCalendarComponent'] = TuiCalendarComponent;
+    this.registerEl(
+      'app-calendar',
+      createCustomElement(TuiCalendarComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiSwitchComponent'] = TuiSwitchComponent;
+    this.registerEl(
+      'app-switch',
+      createCustomElement(TuiSwitchComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiTableComponent'] = TuiTableComponent;
+    this.registerEl(
+      'app-table',
+      createCustomElement(TuiTableComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiPaginatorComponent'] = TuiPaginatorComponent;
+    this.registerEl(
+      'app-paginator',
+      createCustomElement(TuiPaginatorComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiTreeComponent'] = TuiTreeComponent;
+    this.registerEl(
+      'app-tree',
+      createCustomElement(TuiTreeComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiTagComponent'] = TuiTagComponent;
+    this.registerEl(
+      'app-tag',
+      createCustomElement(TuiTagComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiTitleComponent'] = TuiTitleComponent;
+    this.registerEl(
+      'app-title',
+      createCustomElement(TuiTitleComponent, {
+        injector: this.injector,
+      })
+    );
     // @ts-ignore
     window['TuiTopnComponent'] = TuiTopnComponent;
+    this.registerEl(
+      'app-topn',
+      createCustomElement(TuiTopnComponent, {
+        injector: this.injector,
+      })
+    );
+    // @ts-ignore
+    window['TuiIconComponent'] = TuiIconComponent;
+    this.registerEl(
+      'app-icon',
+      createCustomElement(TuiIconComponent, {
+        injector: this.injector,
+      })
+    );
   }
   ngDoBootstrap() {
     this.exportComponent();

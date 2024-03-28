@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { config } from 'src/decorators/config';
 import { TOGGLE_BUTTON_CONFIG } from './toggle-button.config';
 
@@ -10,6 +10,18 @@ import { TOGGLE_BUTTON_CONFIG } from './toggle-button.config';
 })
 export class TuiToggleButtonComponent implements OnInit {
   static tagNamePrefix: string = 'my-toggle-button';
+  @Output('click') click = new EventEmitter();
+  @Output('change') change = new EventEmitter();
+  @Input('input')
+  set inputConfig(configJSON: string) {
+    try {
+      const config = JSON.parse(configJSON);
+      this.optional = config?.optional || this.optional;
+    } catch {
+      // 当只传入一个值时，不使用
+      // this.icon = configJSON;
+    }
+  }
   width = '100%';
   optional = [
     {
@@ -33,8 +45,11 @@ export class TuiToggleButtonComponent implements OnInit {
   selected: any;
   constructor() {}
   onToggleHandler(item: any) {
-    this.selected = item.value;
-    console.log(item);
+    if (JSON.stringify(this.selected) !== JSON.stringify(item.value)) {
+      this.change.emit();
+      this.selected = item.value;
+    }
+    this.click.emit();
   }
   ngOnInit(): void {}
   static extends(option: any): { html: string; js: string } {
@@ -54,24 +69,41 @@ export class TuiToggleButtonComponent implements OnInit {
                   this.fullcolour = ${fullcolour.value};
                   this.optional = ${optional.value};
                 }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
-                }
            }
            MyTuiToggleButton${index}.ɵcmp = {
             ...MyTuiToggleButton${index}.ɵcmp,
             factory:() => { return new MyTuiToggleButton${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyTuiToggleButton${index}, {  injector: injector});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = createCustomElement(MyTuiToggleButton${index}, {  injector: injector});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get selected(){
+                  return this.instance.selected;
+                }
+                set selected(val){
+                  this.instance.selected = val || [];
+                  this.check();
+                }
+                get optional(){
+                  return this.instance.optional;
+                }
+                set optional(optional){
+                  this.instance.optional = optional || [];
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

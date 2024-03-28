@@ -20,10 +20,10 @@ const TUI_SWITCH_CONFIG = {
     },
   ],
   component: {
-    event: [],
+    input: ['checked', 'checkedYes', 'checkedNo'],
+    event: [{ label: 'change', value: 'change' }],
     methods: [],
-    data: [],
-    params: [],
+    data: ['checked'],
   },
 };
 export { TUI_SWITCH_CONFIG };

@@ -15,7 +15,7 @@ const TUI_CHECKBOX_CONFIG = {
   component: {
     event: [],
     methods: [],
-    data: [],
+    data: ['value'],
     params: [],
   },
 };

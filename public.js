@@ -6,6 +6,7 @@
 const components = [
   {
     id: "tui-button",
+    name: "按钮",
     type: "node",
     icon: "#icon-anniu1",
     title: `按钮:
@@ -18,6 +19,7 @@ const components = [
   },
   {
     id: "tui-toggle-button",
+    name: "切换按钮",
     type: "node",
     icon: "#icon-radioBoxList",
     title: `切换按钮:
@@ -30,6 +32,7 @@ const components = [
   },
   {
     id: "tui-input",
+    name: "输入框",
     type: "node",
     icon: "#icon-wenbenshurukuang",
     title: `输入框:
@@ -42,6 +45,7 @@ const components = [
   },
   {
     id: "tui-textarea",
+    name: "多行输入框",
     type: "node",
     icon: "#icon-duohangshurukuang",
     title: `多行输入框:
@@ -54,6 +58,7 @@ const components = [
   },
   {
     id: "tui-spinner",
+    name: "数字输入框",
     type: "node",
     icon: "#icon-shuzishurukuang",
     title: `数字输入框:
@@ -66,6 +71,7 @@ const components = [
   },
   {
     id: "tui-checkbox",
+    name: "多选框",
     type: "node",
     icon: "#icon-checkbox-checked",
     title: `多选框:
@@ -78,6 +84,7 @@ const components = [
   },
   {
     id: "tui-radio",
+    name: "单选框",
     type: "node",
     icon: "#icon-radioBoxList",
     title: `单选框:
@@ -90,6 +97,7 @@ const components = [
   },
   {
     id: "tui-drop",
+    name: "下拉框",
     type: "node",
     icon: "#icon-xialakuang",
     title: `下拉框:
@@ -102,6 +110,7 @@ const components = [
   },
   {
     id: "tui-calendar",
+    name: "时间选择器",
     type: "node",
     icon: "#icon-time-selector",
     title: `时间选择器:
@@ -114,6 +123,7 @@ const components = [
   },
   {
     id: "tui-switch",
+    name: "switch",
     type: "node",
     icon: "#icon-switch",
     title: `switch:
@@ -126,6 +136,7 @@ const components = [
   },
   {
     id: "tui-table",
+    name: "表格",
     type: "node",
     icon: "#icon-biaoge",
     title: `表格:
@@ -138,6 +149,7 @@ const components = [
   },
   {
     id: "tui-paginator",
+    name: "分页器",
     type: "node",
     icon: "#icon-fenyeqi",
     title: `分页:
@@ -150,6 +162,7 @@ const components = [
   },
   {
     id: "tui-tree",
+    name: "树形组件",
     type: "node",
     icon: "#icon-shuzhuangtu",
     title: `树:
@@ -162,6 +175,7 @@ const components = [
   },
   {
     id: "tui-tag",
+    name: "tag组件",
     type: "node",
     icon: "#icon-Tag",
     title: `标签:
@@ -174,6 +188,7 @@ const components = [
   },
   {
     id: "tui-title",
+    name: "title组件",
     type: "node",
     icon: "#icon-a-titleoptimization",
     title: `title:
@@ -186,6 +201,7 @@ const components = [
   },
   {
     id: "tui-topn",
+    name: "topN图",
     type: "node",
     icon: "#icon-top",
     title: `topN:
@@ -196,13 +212,26 @@ const components = [
     des: "topN",
     component: "TuiTopnComponent",
   },
+  {
+    id: "tui-icon",
+    name: "图标",
+    type: "node",
+    icon: "#icon-tubiao",
+    title: `icon:
+                 Angular@12 + @tui/pangu2.1.2`,
+    color: "#dd0031",
+    view: 0,
+    family: "base",
+    des: "图标",
+    component: "TuiIconComponent",
+  },
 ];
 const fs = require("fs"),
   path = require("path"),
   request = require("request");
 const filesName = [
   { name: "main.js", decorator: { defer: true } },
-  { name: "polyfills.js", decorator: { defer: true } },
+  // { name: "polyfills.js", decorator: { defer: true } },
   "styles.css",
 ];
 const area = "tui",

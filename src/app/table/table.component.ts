@@ -18,6 +18,7 @@ export class TuiTableComponent implements OnInit {
     { label: 'IP地址', key: 'IP', width: '300px' },
     { label: '风险等级', key: 'riskLevel', width: '50%' },
   ];
+  slots: any[] = [[], [], [], []];
   tableData = [
     {
       name: '设备资产A',
@@ -81,15 +82,18 @@ export class TuiTableComponent implements OnInit {
     },
   ];
   selectedItems = [];
+  rowData = {};
   constructor() {}
-
+  focusRow(rowData: any) {
+    this.rowData = rowData;
+  }
   ngOnInit(): void {}
   static extends(option: any): { html: string; js: string } {
     // web component 的索引不能递增，因为索引重置后会重复，而且cache后apply会有冲突。
     const index = String(Math.random()).substring(2),
       tagName = `${TuiTableComponent.tagNamePrefix}-${index}`;
     const { html, className } = option;
-    const { headers, tableData, leftType } = html[0].config;
+    const { headers, tableData, leftType, slots } = html[0].config;
     return {
       html: `<${tagName} _data="_ngElementStrategy.componentRef.instance" _methods="_ngElementStrategy.componentRef.instance"></${tagName}>`,
       js: `class MyTuiTable${index} extends ${className}{
@@ -98,17 +102,7 @@ export class TuiTableComponent implements OnInit {
                   this.headers = ${JSON.stringify(headers.value)};
                   this.tableData = ${tableData.value};
                   this.leftType = '${leftType.value}';
-
-                }
-                // extends的class 无法依赖注入cd,只能自己查找
-                get cd(){
-                  const dom = document.querySelector('${tagName}');
-                  return dom._ngElementStrategy;
-                }
-                set cd(value){}
-                check(){
-                  this.cd.detectChanges();
-                  setTimeout(()=>this.cd.detectChanges())
+                  this.slots = ${JSON.stringify(slots.value)};
                 }
            }
            MyTuiTable${index}.ɵcmp = {
@@ -116,8 +110,34 @@ export class TuiTableComponent implements OnInit {
             factory:() => { return new MyTuiTable${index}()},
            };
            (()=>{
-              let customEl = createCustomElement(MyTuiTable${index}, {  injector: injector});
-              customElements.get('${tagName}') || customElements.define('${tagName}',customEl);
+              let angularClass = createCustomElement(MyTuiTable${index}, {  injector: injector});
+              class customClass extends angularClass{
+                constructor(){
+                  super();
+                }
+                check(){
+                  // extends的class 无法依赖注入cd,只能自己查找
+                  let cd = this._ngElementStrategy;
+                  cd.detectChanges();
+                }
+                get instance(){
+                  return this._ngElementStrategy.componentRef.instance
+                }
+                get tableData(){
+                  return this.instance.tableData;
+                }
+                get rowData(){
+                  return this.instance.rowData;
+                }
+                get selectedItems(){
+                  return this.instance.selectedItems;
+                }
+                set tableData(val){
+                  this.instance.tableData = val || [];
+                  this.check();
+                }
+              }  
+              customElements.get('${tagName}') || customElements.define('${tagName}',customClass);
            })();
            `,
     };

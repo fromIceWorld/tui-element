@@ -15,7 +15,7 @@ const TUI_TOPN_CONFIG = {
   component: {
     event: [],
     methods: [],
-    data: [],
+    data: ['list'],
     params: [],
   },
 };
