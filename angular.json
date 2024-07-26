@@ -45,8 +45,8 @@
               }
             },
             "allowedCommonJsDependencies": ["echarts"],
-            "baseHref": "/tui-element/",
-            "deployUrl": "/tui-element/"
+            "baseHref": "/tui_element/",
+            "deployUrl": "/tui_element/"
           },
           "configurations": {
             "production": {
